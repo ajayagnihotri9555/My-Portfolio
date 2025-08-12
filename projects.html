@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+    <title>Projects - Ajay Portfolio</title>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+        *{
+            padding: 0;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        html{
+            overflow-x: hidden;
+        }
+
+        body{
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(to right, rgb(255,255,255), rgb(254,215,173));
+        }
+
+        nav{
+            width: 100%;
+            height: 10vh;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .nav-container{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .logo{
+            color: black;
+            font-size: 2rem;
+            font-weight: bolder;
+        }
+
+        .logo span{
+            color: rgb(109,67, 0);
+            text-shadow: 0 0 10px rgb(109,67, 0);
+        }
+
+        .hamburg, .cancel{
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: black;
+            font-size: 2rem;
+            display: none;
+        }
+
+        .nav-container .links {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .nav-container .links a{
+            position: relative;
+            font-size: 1.2rem;
+            color: black;
+            text-decoration: none;
+            font-weight: 500;
+            transform: 0.3s linear;
+        }
+
+        .nav-container .links a::before{
+            position: absolute;
+            content: "";
+            bottom: -3px;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background-color: rgb(109,67, 0);
+            transition: 0.2s linear;
+        }
+
+        .nav-container .links a:hover::before{
+            width: 100%;
+        }
+
+        .nav-container .contact-btn{
+            background-color: transparent;
+            padding: 5px 20px;
+            border-radius: 20px;
+            border: 2px solid rgb(109,67, 0);
+            transition: 0.2s linear;
+        }
+
+        .nav-container .contact-btn a{
+            color: rgb(109,67, 0);
+            transition: 0.3s linear;
+        }
+
+        .nav-container .contact-btn:hover, .nav-container .contact-btn:hover a{
+            background-color: rgb(109,67, 0);
+            color: white;
+        }
+
+        .nav-container .links a:hover{
+            color: rgb(109,67, 0);
+        }
+
+        .dropdown{
+            z-index: 100;
+            position: absolute;
+            top: 0;
+            transform: translateY(-500px);
+            width: 100%;
+            height: auto;
+            backdrop-filter: brightness(40%) blur(3px);
+            box-shadow: 0 0 20px black;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a{
+            color: white;
+            display: flex;
+            text-decoration: none;
+            justify-content: center;
+            padding: 15px 0;
+            align-items: center;
+            transition: 0.2s linear;
+        }
+
+        .dropdown .links a:hover{
+            background-color: rgb(109,67, 0);
+        }
+
+        .projects-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .projects-header h1 {
+            font-size: 3rem;
+            color: rgb(109,67, 0);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(109,67, 0, 0.3);
+        }
+
+        .projects-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid rgb(109,67, 0);
+            background: transparent;
+            color: rgb(109,67, 0);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: rgb(109,67, 0);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .project-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, rgb(109,67, 0), rgb(150,100, 0));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(109,67, 0, 0.8), rgba(150,100, 0, 0.8));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-image::before {
+            opacity: 1;
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-overlay i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .project-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, rgb(109,67, 0), rgb(150,100, 0));
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .project-link {
+            padding: 8px 16px;
+            border: 2px solid rgb(109,67, 0);
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .project-link.live {
+            background: rgb(109,67, 0);
+            color: white;
+        }
+
+        .project-link.live:hover {
+            background: transparent;
+            color: rgb(109,67, 0);
+        }
+
+        .project-link.code {
+            background: transparent;
+            color: rgb(109,67, 0);
+        }
+
+        .project-link.code:hover {
+            background: rgb(109,67, 0);
+            color: white;
+        }
+
+        
+
+        @media (max-width: 884px) {
+            .projects-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            
+
+            nav .logo{
+                position: absolute;
+                top: 16px;
+                left: 15px;
+                font-size: 1.5rem;
+            }
+
+            .nav-container .links{
+                display: none;
+            }
+
+            .hamburg,.cancel{
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .project-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo" data-aos="zoom-in" data-aos-duration="1000">
+                <span>Welcome to my Portfolio</span>
+            </div>
+            
+            <div class="links">
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100"><a href="index.html">Home</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200"><a href="about.html">About</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300"><a href="skills.html">Skills</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400"><a href="certificates.html">Certificates</a></div>
+                <div class="link" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500"><a href="projects.html">Projects</a></div>
+                <div class="link contact-btn" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600"><a href="contact.html">Contact Us</a></div>
+            </div>
+            <i class="fa-solid fa-bars hamburg" onclick="hamburg()"></i>
+        </div>
+        <div class="dropdown">
+            <div class="links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="skills.html">Skills</a>
+                <a href="certificates.html">Certificates</a>
+                <a href="projects.html">Projects</a>
+                <a href="contact.html">Contact Us</a>
+                <i class="fa-solid fa-xmark cancel" onclick="cancel()"></i>
+            </div>
+        </div>
+    </nav>
+
+    <section class="projects-section">
+        <div class="projects-header" data-aos="fade-up" data-aos-duration="1000">
+            <h1>My Projects</h1>
+            <p>Showcasing my creative work and technical expertise through various web development projects</p>
+        </div>
+
+        <div class="filter-buttons" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="web">Web Apps</button>
+            <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+            <button class="filter-btn" data-filter="design">UI/UX Design</button>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card" data-category="web" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=200&fit=crop" alt="Beach Explorer Web">
+                    <div class="project-overlay">
+                        <i class="fas fa-globe"></i>
+                        <p>Beach Explorer Web</p>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Beach Explorer Web</h3>
+                    <p class="project-description">A comprehensive web application for exploring and discovering beautiful beaches around the world with detailed information and user reviews.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">API Integration</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link live">Live Demo</a>
+                        <a href="#" class="project-link code">View Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="game" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=200&fit=crop" alt="HectoClash Game">
+                    <div class="project-overlay">
+                        <i class="fas fa-gamepad"></i>
+                        <p>HectoClash Game</p>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">HectoClash Game</h3>
+                    <p class="project-description">An exciting multiplayer game with strategic gameplay, real-time battles, and engaging user experience for gaming enthusiasts.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Canvas API</span>
+                        <span class="tech-tag">WebSockets</span>
+                        <span class="tech-tag">Game Logic</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link live">Live Demo</a>
+                        <a href="#" class="project-link code">View Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="ai" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=200&fit=crop" alt="Fake Social Media Detector">
+                    <div class="project-overlay">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>Fake Social Media Detector</p>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Fake Social Media Detector</h3>
+                    <p class="project-description">An AI-powered tool that detects and identifies fake social media accounts using machine learning algorithms and pattern recognition.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Machine Learning</span>
+                        <span class="tech-tag">API Development</span>
+                        <span class="tech-tag">Data Analysis</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link live">Live Demo</a>
+                        <a href="#" class="project-link code">View Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="web" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop" alt="Book My Religious Journey">
+                    <div class="project-overlay">
+                        <i class="fas fa-book-open"></i>
+                        <p>Book My Religious Journey</p>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Book My Religious Journey</h3>
+                    <p class="project-description">A comprehensive platform for booking religious tours and pilgrimages with detailed itineraries, user reviews, and secure booking system.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">React.js</span>
+                        <span class="tech-tag">Node.js</span>
+                        <span class="tech-tag">MongoDB</span>
+                        <span class="tech-tag">Payment Gateway</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link live">Live Demo</a>
+                        <a href="#" class="project-link code">View Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="700">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=200&fit=crop" alt="ScriptStudy">
+                    <div class="project-overlay">
+                        <i class="fas fa-graduation-cap"></i>
+                        <p>ScriptStudy</p>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">ScriptStudy</h3>
+                    <p class="project-description">An internship web platform designed to help students and professionals enhance their coding skills through practical projects and mentorship.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Bootstrap</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link live">Live Demo</a>
+                        <a href="#" class="project-link code">View Code</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="utility" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800">
+                <div class="project-image">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop" alt="Calculator">
+                    <div class="project-overlay">
+                        <i class="fas fa-calculator"></i>
+                        <p>Calculator</p>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Calculator</h3>
+                    <p class="project-description">A functional and user-friendly calculator application with basic arithmetic operations, scientific functions, and responsive design.</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">DOM Manipulation</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link live">Live Demo</a>
+                        <a href="#" class="project-link code">View Code</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    </section>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({offset:0});
+    </script>
+    <script>
+        function hamburg(){
+            const navbar = document.querySelector(".dropdown")
+            navbar.style.transform = "translateY(0px)"
+        }
+        function cancel(){
+            const navbar = document.querySelector(".dropdown")
+            navbar.style.transform = "translateY(-500px)"
+        }
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const filter = button.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
